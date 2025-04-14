@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757403796762",
+    "project_id": "vendorinventorymanagemen-c35ac",
+    "storage_bucket": "vendorinventorymanagemen-c35ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757403796762:android:7e619b90bb998d733c18a3",
+        "android_client_info": {
+          "package_name": "ie.setu.vendorinventorymanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9lscVg8PEytsecr0iOk9oB-Ose_az0m8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
