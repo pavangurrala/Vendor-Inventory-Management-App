@@ -12,11 +12,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ie.setu.vendorinventorymanagement.navigation.AuthNavgraph
+import ie.setu.vendorinventorymanagement.navigation.AppNavgraph
 import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
+import ie.setu.vendorinventorymanagement.navigation.allDestinations
+import ie.setu.vendorinventorymanagement.navigation.StockTracking
+import ie.setu.vendorinventorymanagement.ui.components.general.BottomAppBarProvider
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +31,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             VendorInventoryManagementTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
+
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    AuthNavgraph()
+                    VendorManagementApp(modifier = Modifier)
                 }
             }
         }
@@ -39,17 +41,20 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun VendorManagementApp(modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()) {
+
+    Scaffold(
+        modifier = modifier,
+        content = {paddingValues ->
+            AppNavgraph(
+                modifier = modifier,
+                navController = navController,
+                paddingValues = paddingValues,
+            )
+        },
+
+
     )
+
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    VendorInventoryManagementTheme {
-        Greeting("Android")
-    }
-}
