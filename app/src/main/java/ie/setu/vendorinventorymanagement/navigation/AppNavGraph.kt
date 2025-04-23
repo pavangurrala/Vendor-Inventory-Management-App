@@ -14,6 +14,11 @@ import ie.setu.vendorinventorymanagement.ui.screens.signup.SignupScreen
 import ie.setu.vendorinventorymanagement.ui.screens.home.HomeScreen
 import ie.setu.vendorinventorymanagement.ui.screens.productmanagement.ProductManagementScreen
 import ie.setu.vendorinventorymanagement.ui.screens.stocktracking.StockTrackingScreen
+import ie.setu.vendorinventorymanagement.ui.screens.profile.ProfileScreen
+import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.PurchaseOrderManagementScreen
+import ie.setu.vendorinventorymanagement.ui.screens.paymentsmanagement.PaymentManagementScreen
+import ie.setu.vendorinventorymanagement.ui.screens.productmanagement.AddProductScreen
+
 @Composable
 fun AppNavgraph(
     modifier: Modifier,
@@ -25,5 +30,10 @@ fun AppNavgraph(
         composable(route = SignUp.route) { SignupScreen(navController) }
         composable(route = ProductManagement.route) { ProductManagementScreen(modifier = modifier, navController = navController) }
         composable(route = StockTracking.route) { StockTrackingScreen(modifier = modifier, navController = navController) }
+        composable(route = PurchaseOrderManagement.route){ PurchaseOrderManagementScreen(modifier = modifier, navController = navController)}
+        composable(route = PaymentManagement.route){ PaymentManagementScreen(modifier = modifier, navController = navController)}
+        composable(route = Home.route){ HomeScreen(modifier=modifier, navController=navController)}
+        composable(route = Profile.route) { ProfileScreen(modifier= modifier, navController = navController)  }
+        composable(route = AddProduct.route) { AddProductScreen(modifier= modifier, navController = navController) }
     }
 }

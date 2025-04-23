@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">VendorInventoryManagement</string>
+    <string name="products">Products</string>
+    <string name="empty_list">No Products Yet - Go add a Product!</string>
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="add_product">Add Product</string>
+    <string name="product_name">Product Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="price">Price per Unit</string>
+    <string name="vendor_name">Vendor Name</string>
+    <string name="location">Location</string>
 </resources>

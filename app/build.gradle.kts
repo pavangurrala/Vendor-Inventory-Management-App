@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.numberPicker)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.compose.animation)
@@ -75,6 +76,12 @@ dependencies {
 
     //Firebase
     implementation(libs.firebase.auth)
+    implementation(libs.compose.foundation)
+    implementation(libs.firebase.firestore)
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

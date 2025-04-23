@@ -1,8 +1,9 @@
-package ie.setu.vendorinventorymanagement.ui.screens.stocktracking
+package ie.setu.vendorinventorymanagement.ui.screens.paymentsmanagement
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.*
@@ -20,14 +21,13 @@ import com.google.firebase.auth.FirebaseAuth
 import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
 import ie.setu.vendorinventorymanagement.navigation.Home
 import ie.setu.vendorinventorymanagement.ui.components.general.BottomAppBarProvider
-import ie.setu.vendorinventorymanagement.navigation.allDestinations
-import ie.setu.vendorinventorymanagement.navigation.ProductManagement
-import ie.setu.vendorinventorymanagement.navigation.listOfHomeTiles
 import ie.setu.vendorinventorymanagement.ui.components.general.TopAppBarProvider
+import ie.setu.vendorinventorymanagement.navigation.allDestinations
+import ie.setu.vendorinventorymanagement.navigation.listOfHomeTiles
 import ie.setu.vendorinventorymanagement.ui.components.general.MenuItem
 @Composable
-fun StockTrackingScreen(modifier: Modifier = Modifier,navController: NavHostController){
-    var selectedMenuItem by remember { mutableStateOf<MenuItem?>(MenuItem.ProductManagement) }
+fun PaymentManagementScreen(modifier: Modifier = Modifier,navController: NavHostController){
+    var selectedMenuItem by remember { mutableStateOf<MenuItem?>(MenuItem.StockTracking) }
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentNavBackStackEntry?.destination
     val currentBottomScreen =
@@ -35,26 +35,31 @@ fun StockTrackingScreen(modifier: Modifier = Modifier,navController: NavHostCont
     val currentTileScreen = listOfHomeTiles.find { it.route == currentDestination?.route }?:Home
     VendorInventoryManagementTheme {
         Scaffold(
+
             topBar = {
                 TopAppBarProvider(
                     currentScreen = currentTileScreen,
                     canNavigateBack = navController.previousBackStackEntry != null
-                ) { navController.navigateUp() }
+                ) {
+                    navController.navigateUp()
+                }
             },
             bottomBar = {
                 BottomAppBarProvider(navController,
                     currentScreen = currentBottomScreen,)
-            }
-        ) { paddingValues ->
+            },
+
+            )
+        { paddingValues ->
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
+                    .padding(horizontal = 24.dp, vertical = 32.dp)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ){
-                Text("Welcome to Stock Tracking Page!", fontSize = 24.sp)
+                Text("Welcome to Payment Management Page!", fontSize = 24.sp)
 
             }
         }

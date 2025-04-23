@@ -92,7 +92,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 
                 if (loginState is LoginState.Success) {
                     LaunchedEffect(Unit) {
-                        navController.navigate("productmanagement") {
+                        navController.navigate("home") {
                             popUpTo("login") { inclusive = true }
                         }
                     }

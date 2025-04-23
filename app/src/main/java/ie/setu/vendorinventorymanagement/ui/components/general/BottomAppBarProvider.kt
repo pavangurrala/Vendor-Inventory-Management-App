@@ -1,4 +1,5 @@
 package ie.setu.vendorinventorymanagement.ui.components.general
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.runtime.Composable
 import ie.setu.vendorinventorymanagement.navigation.bottomAppBarDestinations
 import androidx.compose.runtime.*
@@ -26,7 +27,8 @@ fun BottomAppBarProvider(
     var navigationSelectedItem by remember { mutableIntStateOf(0) }
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.secondary
+        contentColor = MaterialTheme.colorScheme.secondary,
+        windowInsets = WindowInsets(0)
     ) {
         bottomAppBarDestinations.forEachIndexed { index, navigationItem ->
             NavigationBarItem(

@@ -1,5 +1,6 @@
 package ie.setu.vendorinventorymanagement.ui.components.general
 import androidx.collection.emptyLongSet
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -43,7 +44,8 @@ fun TopAppBarProvider(
                 color = Color.White
             )
         },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
+        windowInsets = WindowInsets(0),
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
         navigationIcon = {
