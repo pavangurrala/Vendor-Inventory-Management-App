@@ -24,6 +24,7 @@ import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
 import ie.setu.vendorinventorymanagement.navigation.allDestinations
 import ie.setu.vendorinventorymanagement.navigation.StockTracking
 import ie.setu.vendorinventorymanagement.ui.components.general.BottomAppBarProvider
+import ie.setu.vendorinventorymanagement.data.models.ProductsModel
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ fun VendorManagementApp(modifier: Modifier = Modifier, navController: NavHostCon
                 modifier = modifier,
                 navController = navController,
                 paddingValues = paddingValues,
+
             )
         },
 

@@ -25,7 +25,9 @@ class ProductManagementViewModel @Inject constructor(
 ):ViewModel()
 {
     private val _products = MutableStateFlow<List<ProductsModel>>(emptyList())
+    private val _editProduct = MutableStateFlow<Product?>(null)
     val uiProducts: StateFlow<List<ProductsModel>> = _products.asStateFlow()
+    val editProducts : StateFlow<Product?> = _editProduct
     var iserror = mutableStateOf(false)
     var isloading = mutableStateOf(false)
     var error = mutableStateOf(Exception())
@@ -52,6 +54,22 @@ class ProductManagementViewModel @Inject constructor(
             }
         }
     }
+    fun getProductById(productId: String){
+        viewModelScope.launch {
+            try{
+                isloading.value = true
+                val exItem = repository.getProductById(productId)
+                _editProduct.value = exItem
+                iserror.value = false
+                isloading.value = false
+            }catch(e:Exception){
+                iserror.value = true
+                isloading.value = false
+                error.value = e
+                Timber.i("RVM Error ${e.message}")
+            }
+        }
+    }
     fun addProducts(product: ProductsModel, onComplete:()->Unit = {}){
         viewModelScope.launch {
             try{
@@ -67,5 +85,23 @@ class ProductManagementViewModel @Inject constructor(
             }
             Timber.i("DVM Insert Message = : ${error.value.message} and isError ${iserror.value}")
         }
+    }
+    fun editProduct(product: ProductsModel, onComplete: () -> Unit){
+        viewModelScope.launch {
+            try{
+                isloading.value = true
+                repository.updateProduct(product.email, product)
+                iserror.value = false
+                isloading.value = false
+                onComplete()
+            }catch (e:Exception){
+                iserror.value = true
+                error.value = e
+                isloading.value = false
+            }
+        }
+    }
+    fun deleteProduct(product: ProductsModel) = viewModelScope.launch {
+        repository.deleteProduct(product.email, product.id)
     }
 }

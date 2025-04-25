@@ -14,6 +14,7 @@ import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material.icons.sharp.Assessment
 import androidx.compose.material.icons.sharp.ConnectingAirports
 import androidx.compose.material.icons.sharp.Dashboard
+import androidx.compose.material.icons.sharp.Edit
 import androidx.compose.material.icons.sharp.Home
 import androidx.compose.material.icons.sharp.Person
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -67,8 +68,13 @@ object AddProduct: AppDestination{
     override val label = "Add Product"
     override val route = "add_product"
 }
+object EditProduct: AppDestination{
+    override val icon = Icons.Sharp.Edit
+    override val label = "Edit Product"
+    override val route = "edit_product/{productId}"
+}
 
 val bottomAppBarDestinations = listOf(Home,Profile )
 val allDestinations = listOf(Home, Profile)
 val listOfHomeTiles = listOf(ProductManagement, StockTracking, PurchaseOrderManagement, PaymentManagement)
-val linkingScreens = listOf(AddProduct)
+val linkingScreens = listOf(AddProduct, EditProduct)

@@ -1,6 +1,7 @@
 package ie.setu.vendorinventorymanagement.ui.screens.productmanagement
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +21,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.PhoneAndroid
@@ -35,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
 import ie.setu.vendorinventorymanagement.navigation.Home
@@ -95,19 +100,18 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(horizontal = 24.dp, vertical = 32.dp)
+                    .padding(horizontal = 10.dp, vertical = 5.dp)
             ){
                 Column(
                     modifier = Modifier
-                        .padding(paddingValues)
-                        .padding(horizontal = 24.dp, vertical = 10.dp)
+                        .padding(horizontal = 10.dp, vertical = 5.dp)
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
 
                     ){
-                    //Text("Welcome to Product Management Page!", fontSize = 24.sp)
+//                    Text("ADD PRODUCTS", fontSize = 24.sp)
                     if(isLoading) ShowLoader("Loading Products...")
-                    //ProductText()
+                    ProductText()
                     if(products.isEmpty() && !isError)
                         Centre(Modifier.fillMaxSize()) {
                             Text(
@@ -126,7 +130,7 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
                             .fillMaxSize()
                             .padding(6.dp)) {
                             items(products){ product ->
-                                ProductCardList(product)
+                                ProductCardList(product, productviewModel, navController)
                             }
                         }
                     }
@@ -151,31 +155,56 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ResourceAsColor")
 @Composable
-fun ProductCardList(product: Product){
+fun ProductCardList(product: Product, productviewModel: ProductManagementViewModel,navController: NavHostController){
     var expanded by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val delete_message = stringResource(R.string.product_deletion_success)
+    val tooltipState = rememberTooltipState()
+    val cardHeaderText = product.productCategory +"-"+product.brandName
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(horizontal = 2.dp,vertical = 5.dp)
             .clickable { expanded = !expanded },
         elevation = CardDefaults.cardElevation(4.dp),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
     ){
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(5.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()) {
-                Text(text = product.productCategory, style = MaterialTheme.typography.titleMedium)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val icon = when (product.productCategory.lowercase()){
+                        "laptops" -> Icons.Default.Laptop
+                        "phones" -> Icons.Default.PhoneAndroid
+                        "printers" -> Icons.Default.Print
+                        else -> Icons.Default.Inventory2
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = "Category Icon",
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(20.dp),
+                        tint = Color.White
+                    )
+                    Text(text = cardHeaderText, style = MaterialTheme.typography.titleMedium)
+                }
+
                 if(product.totalQuantity>0){
                     Text(
                         text = stringResource(R.string.in_stock),
                         color = Color.White,
                         modifier = Modifier
-                            .background(Color(color = R.color.green), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 4.dp),
+                            .background(Color(R.color.green), RoundedCornerShape(12.dp))
+                            .padding(horizontal = 12.dp, vertical = 6.dp),
                         fontSize = 12.sp
                     )
                 }else{
@@ -184,7 +213,7 @@ fun ProductCardList(product: Product){
                         color = Color.White,
                         modifier = Modifier
                             .background(Color(R.color.red), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 4.dp),
+                            .padding(horizontal = 12.dp, vertical = 6.dp),
                         fontSize = 12.sp
                     )
                 }
@@ -193,31 +222,79 @@ fun ProductCardList(product: Product){
             AnimatedVisibility(visible = expanded) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text("Brand:${product.brandName}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Product Name:${product.productName}")
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text("Vendor:${product.vendorName}")
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text("Location:${product.location}")
-                    Text("Price:${product.price}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Price:$${product.price}/unit")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()){
+                        IconButton(onClick = {
+                            navController.navigate("edit_product/${product.id}")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.edit_product),
+                                tint = Color.White
+                            )
+                        }
+                        IconButton(onClick = {
+                            showDeleteDialog = true
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.delete_product),
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+
+                    }
                 }
                 if(product.individualQuantities.isNotEmpty()){
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Brand-Wise BreakDown:")
-                    product.individualQuantities.forEach{(brand, quantity) ->
-                        Text("$brand:$quantity units")
-                    }
+                    //Text("BreakDown:")
+                    Spacer(modifier = Modifier.height(8.dp))
+//                    product.individualQuantities.forEach{(brand, quantity) ->
+//                        Text("$brand:$quantity units")
+//                    }
                 }
-                val icon = when (product.productCategory.lowercase()){
-                    "laptops" -> Icons.Default.Laptop
-                    "phones" -> Icons.Default.PhoneAndroid
-                    "printers" -> Icons.Default.Print
-                    else -> Icons.Default.Inventory2
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Icon(
-                    imageVector = icon,
-                    contentDescription = "Category Icon",
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+
+
+
             }
         }
+    }
+    if(showDeleteDialog){
+      AlertDialog(
+          onDismissRequest = {showDeleteDialog = false},
+          title = { Text(text = stringResource(R.string.confirm_deletion_text))},
+          text = { Text(text = stringResource(R.string.confirm_Product_deletion))},
+          confirmButton = {
+              TextButton(onClick = {
+                  showDeleteDialog = false
+                  productviewModel.deleteProduct(product)
+                  Toast.makeText(
+                      context,
+                      delete_message,
+                      Toast.LENGTH_SHORT
+
+                  ).show()
+              }) {
+                    Text("Yes")
+              }
+          },
+          dismissButton = {
+              TextButton(onClick = {
+                  showDeleteDialog = false
+              }) {
+                  Text("No")
+              }
+          }
+      )
     }
 }

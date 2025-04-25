@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -49,12 +51,12 @@ import ie.setu.vendorinventorymanagement.ui.components.general.DropDownField
 
 @Composable
 fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostController, viewModel: ProductManagementViewModel = hiltViewModel()){
-
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentNavBackStackEntry?.destination
     val currentBottomScreen =
         allDestinations.find { it.route == currentDestination?.route } ?: Home
     val currentTileScreen = linkingScreens.find { it.route == currentDestination?.route }?:Home
+    var addProductSuccessDialog by remember { mutableStateOf(false) }
     VendorInventoryManagementTheme {
         Scaffold(
 
@@ -70,7 +72,6 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                 BottomAppBarProvider(navController,
                     currentScreen = currentBottomScreen,)
             },
-
             ){
                 paddingValues ->
             Column(
@@ -79,7 +80,6 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                     .padding(horizontal = 24.dp, vertical = 32.dp)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-
                 ){
                 val context = LocalContext.current
                 var productName by remember { mutableStateOf("") }
@@ -111,7 +111,6 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                     )
                     DropDownField("Category",productCategory, categories ){productCategory = it}
                     DropDownField("Brand",brandName, brandOptions ){brandName = it}
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
@@ -119,10 +118,6 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                         Text(text = stringResource(R.string.quantity), modifier = Modifier.weight(1f))
                         AmountPicker(value = individualQuantities, onValueChange = {individualQuantities = it })
                     }
-
-
-
-
                     OutlinedTextField(
                         value = price,
                         onValueChange = {price = it},
@@ -155,8 +150,7 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                                 location = location
                             )
                             viewModel.addProducts(product){
-                                Toast.makeText(context, "Product Added!", Toast.LENGTH_SHORT).show()
-                                navController.popBackStack()
+                                addProductSuccessDialog = true
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -164,6 +158,27 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                         Text(text = stringResource(R.string.add_product))
                     }
 
+                }
+                if (addProductSuccessDialog) {
+                    AlertDialog(
+                        onDismissRequest = { addProductSuccessDialog = false },
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    addProductSuccessDialog = false
+                                    navController.popBackStack()
+                                }
+                            ) {
+                                Text("Ok")
+                            }
+                        },
+                        title = {
+                            Text(text = stringResource(R.string.add_success))
+                        },
+                        text = {
+                            Text(text = stringResource(R.string.product_addition_success))
+                        }
+                    )
                 }
             }
         }
