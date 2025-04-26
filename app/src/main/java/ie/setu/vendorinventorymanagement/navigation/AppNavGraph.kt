@@ -22,7 +22,7 @@ import ie.setu.vendorinventorymanagement.ui.screens.productmanagement.EditProduc
 import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.EditOrderScreen
 import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.PlaceOrderScreen
 import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.OrdersScreen
-
+import ie.setu.vendorinventorymanagement.ui.screens.paymentsmanagement.PaymentsPage
 @Composable
 fun AppNavgraph(
     modifier: Modifier,
@@ -54,5 +54,8 @@ fun AppNavgraph(
             EditOrderScreen(modifier= modifier, navController = navController,orderId)
         }
         composable(route = Orders.route) { OrdersScreen(modifier=modifier, navController=navController)}
+        composable(route = AddPayments.route) {backStackEntry ->
+            val orderId = backStackEntry.arguments?.getString("orderId")?:""
+            PaymentsPage(modifier=modifier, navController=navController, orderId)  }
     }
 }

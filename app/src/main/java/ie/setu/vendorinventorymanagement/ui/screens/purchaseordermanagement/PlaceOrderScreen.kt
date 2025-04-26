@@ -80,6 +80,9 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
     val expectedDate = remember {
         LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd MM yyyy"))
     }
+    val orderPlacedDate = remember {
+        LocalDate.now().format(DateTimeFormatter.ofPattern("dd MM yyyy"))
+    }
     LaunchedEffect(productId) {
         viewModel.getProductById(productId)
     }
@@ -123,6 +126,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                         var buyerEmail by remember { mutableStateOf("") }
                         var buyerPhoneNumber by remember { mutableStateOf("") }
                         val totalCost = orderQuantity * price
+
                         val scrollState = rememberScrollState()
                         Column(
                             modifier = Modifier
@@ -136,7 +140,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                                 onValueChange = {},
                                 label = { Text(text = stringResource(R.string.product_name))},
                                 modifier = Modifier.fillMaxWidth(),
-                                enabled = false
+                                readOnly = true
                             )
                             OutlinedTextField(
                                 value = brandName,
@@ -209,6 +213,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                                         buyerEmail = buyerEmail,
                                         buyerPhoneNumber = buyerPhoneNumber,
                                         orderedQuantity = orderQuantity,
+                                        orderPlacedDate = orderPlacedDate,
                                         expectedDeliveryDate = expectedDate,
                                         destination = destination,
                                         totalCost = totalCost
@@ -229,7 +234,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                                 confirmButton = {
                                     TextButton(onClick = {
                                         addPurchaseOrderSuccess = false
-                                        navController.popBackStack()
+                                        navController.navigate("purchased_orders")
                                     }) {
                                         Text(text = stringResource(R.string.ok))
                                     }

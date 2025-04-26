@@ -13,7 +13,7 @@ data class PurchaseOrdersModel(
     val location: String = "N/A",
     val brandName: String = "N/A",
     val email : String = FirebaseAuth.getInstance().currentUser?.email.toString(),
-    val orderPlacedDate : Date = Date(),
+    val orderPlacedDate : String = "",
     val expectedDeliveryDate: String = "N/A",
     val productName: String = "N/A",
     val vendorName: String = "N/A",
@@ -24,5 +24,5 @@ data class PurchaseOrdersModel(
     val buyerEmail: String = "N/A",
     val buyerPhoneNumber: String = "N/A",
     val orderModifiedDate: Date = Date(),
-    val payment: String = "No",
+    val payment: String = "Not Done",
     )

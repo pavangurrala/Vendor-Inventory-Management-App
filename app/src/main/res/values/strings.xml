@@ -32,7 +32,7 @@
     <string name="orders">Orders</string>
     <string name="place_order">Place Order</string>
     <string name="order_placed">Order Placed!</string>
-    <string name="order_placed_success">You will now be redirected to payment page to complete your order!</string>
+    <string name="order_placed_success"> Please pay from your order card to complete your order!</string>
     <string name="order_deletion_success">Order Deleted Successfully! </string>
     <string name="order_update_success">Order Updated Successfully! </string>
     <string name="confirm_Order_deletion">Do you want to cancel this order? </string>
@@ -41,4 +41,12 @@
     <string name="order_id">Order ID</string>
     <string name="order_quantity">Quantity Ordered</string>
     <string name="total_cost">Total Cost</string>
+    <string name="payment_page">Payment Page</string>
+    <string name="payments_list">Payments</string>
+    <string name="select_payment">Select Payment Method</string>
+    <string name="paypal">PayPal</string>
+    <string name="direct">Direct</string>
+    <string name="payment_success">Payment SuccessFull!</string>
+    <string name="payment_order_success">Your Order is placed </string>
+    <string name="stock_tracker">Stock Tracker</string>
 </resources>

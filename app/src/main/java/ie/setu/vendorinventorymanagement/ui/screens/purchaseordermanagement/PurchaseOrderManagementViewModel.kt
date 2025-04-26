@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ie.setu.vendorinventorymanagement.data.models.PaymentsModel
 import ie.setu.vendorinventorymanagement.firebase.services.FirestoreService
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -142,4 +143,5 @@ class PurchaseOrderManagementViewModel@Inject constructor(
     fun deleteOrder(purchaseOrder: PurchaseOrdersModel) = viewModelScope.launch {
         repository.deleteOrder(purchaseOrder.email, purchaseOrder.orderId)
     }
+
 }

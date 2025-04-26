@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Paid
+import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.sharp.Add
@@ -47,7 +49,7 @@ object PurchaseOrderManagement : AppDestination {
     override val route = "purchaseordermanagement"
 }
 object PaymentManagement : AppDestination {
-    override val icon = Icons.Filled.CreditCard
+    override val icon = Icons.Filled.Paid
     override val label = "Payments"
     override val route = "paymentmanagement"
 }
@@ -91,6 +93,12 @@ object Orders: AppDestination{
     override val label = "Orders"
     override val route = "purchased_orders"
 }
+object AddPayments: AppDestination{
+    override val icon = Icons.Default.Payment
+    override val label = "AddPayments"
+    override val route = "pay_order/{orderId}"
+}
+
 object Maps: AppDestination{
     override val icon = Icons.Default.LocationOn
     override val label = "Maps"
@@ -98,7 +106,7 @@ object Maps: AppDestination{
 }
 
 
-val bottomAppBarDestinations = listOf(Home,Orders,Profile)
-val allDestinations = listOf(Home,Orders, Profile)
+val bottomAppBarDestinations = listOf(Home,Orders,PaymentManagement,Profile)
+val allDestinations = listOf(Home,Orders, PaymentManagement,Profile)
 val listOfHomeTiles = listOf(ProductManagement, StockTracking, PurchaseOrderManagement, PaymentManagement, Orders, Maps)
-val linkingScreens = listOf(AddProduct,EditProduct,PlaceOrder, EditOrder)
+val linkingScreens = listOf(AddProduct,EditProduct,PlaceOrder, EditOrder,AddPayments)

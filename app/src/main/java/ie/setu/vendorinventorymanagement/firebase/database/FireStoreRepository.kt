@@ -8,9 +8,13 @@ import ie.setu.vendorinventorymanagement.firebase.services.Product
 import ie.setu.vendorinventorymanagement.data.rules.Constants.PRODUCT_COLLECTION
 import ie.setu.vendorinventorymanagement.data.rules.Constants.PURCHASE_ORDER_COLLECTION
 import ie.setu.vendorinventorymanagement.data.rules.Constants.USER_EMAIL
+import ie.setu.vendorinventorymanagement.data.rules.Constants.BUYER_EMAIL
+import ie.setu.vendorinventorymanagement.data.rules.Constants.PAYMENTS_COLLECTION
+import ie.setu.vendorinventorymanagement.firebase.services.Payment
 import ie.setu.vendorinventorymanagement.firebase.services.Products
 import ie.setu.vendorinventorymanagement.firebase.services.PurchaseOrder
 import ie.setu.vendorinventorymanagement.firebase.services.PurchaseOrdersList
+import ie.setu.vendorinventorymanagement.firebase.services.PaymentsList
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject
@@ -76,6 +80,19 @@ class FireStoreRepository @Inject constructor(private val firestore: FirebaseFir
         firestore.collection(PURCHASE_ORDER_COLLECTION)
             .document(orderId)
             .delete().await()
+    }
+
+    override suspend fun getAllPayments(email: String): PaymentsList {
+        return firestore.collection(PAYMENTS_COLLECTION)
+            .whereEqualTo(BUYER_EMAIL, email)
+            .dataObjects()
+    }
+
+    override suspend fun addPayment(email: String, payment: Payment) {
+        val addPaymentWithEmail = payment.copy(buyerEmail = email)
+        val newDocument = firestore.collection(PAYMENTS_COLLECTION).document()
+        val addPaymentWithId = addPaymentWithEmail.copy(paymentId = newDocument.id)
+        newDocument.set(addPaymentWithId).await()
     }
 
 }

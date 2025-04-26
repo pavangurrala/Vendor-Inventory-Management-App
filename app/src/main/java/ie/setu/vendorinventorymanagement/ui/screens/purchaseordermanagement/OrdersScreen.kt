@@ -178,9 +178,11 @@ fun OrdersCardList(order: PurchaseOrder, orderViewModel: PurchaseOrderManagement
                     Spacer(modifier = Modifier.height(8.dp))
                     Text("Delivery Address:${order.destination}")
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Order Placed:${order.orderPlacedDate}")
+                    Text("Order Placed Date:${order.orderPlacedDate}")
                     Spacer(modifier = Modifier.height(8.dp))
                     Text("Expected Delivery:${order.expectedDeliveryDate}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Payment:${order.payment}")
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.End,

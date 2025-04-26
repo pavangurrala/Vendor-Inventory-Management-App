@@ -161,13 +161,6 @@ fun EditOrderScreen(modifier: Modifier = Modifier,
                             enabled = false
                         )
                         OutlinedTextField(
-                            value = location,
-                            onValueChange = {},
-                            label = { Text(text = stringResource(R.string.location))},
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = false
-                        )
-                        OutlinedTextField(
                             value = destination,
                             onValueChange = {destination = it},
                             label = { Text(text = stringResource(R.string.order_id))},
