@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,8 +24,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Laptop
+import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.Print
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -60,25 +61,27 @@ import ie.setu.vendorinventorymanagement.ui.components.general.MenuItem
 import ie.setu.vendorinventorymanagement.navigation.listOfHomeTiles
 import ie.setu.vendorinventorymanagement.ui.screens.productmanagement.ProductManagementViewModel
 import ie.setu.vendorinventorymanagement.data.models.ProductsModel
+import ie.setu.vendorinventorymanagement.data.models.PurchaseOrdersModel
 import ie.setu.vendorinventorymanagement.ui.components.general.Centre
 import ie.setu.vendorinventorymanagement.ui.components.general.ShowLoader
-import ie.setu.vendorinventorymanagement.ui.components.products.ProductText
+import ie.setu.vendorinventorymanagement.ui.components.purchase.OrdersText
 import ie.setu.vendorinventorymanagement.R
 import ie.setu.vendorinventorymanagement.firebase.services.Product
-
 import ie.setu.vendorinventorymanagement.ui.components.purchase.PurchaseText
+import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.PurchaseOrderManagementViewModel
+import ie.setu.vendorinventorymanagement.firebase.services.PurchaseOrder
+
 @Composable
-fun PurchaseOrderManagementScreen(modifier: Modifier = Modifier,navController: NavHostController,productviewModel: ProductManagementViewModel = hiltViewModel()){
-    var selectedMenuItem by remember { mutableStateOf<MenuItem?>(MenuItem.StockTracking) }
+fun OrdersScreen(modifier: Modifier = Modifier,navController: NavHostController, orderViewModel:PurchaseOrderManagementViewModel = hiltViewModel()){
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentNavBackStackEntry?.destination
     val currentBottomScreen =
         allDestinations.find { it.route == currentDestination?.route } ?: Home
     val currentTileScreen = listOfHomeTiles.find { it.route == currentDestination?.route }?:Home
-    val products = productviewModel.uiProducts.collectAsState().value
-    val isError = productviewModel.iserror.value
-    val error = productviewModel.error.value
-    val isLoading = productviewModel.isloading.value
+    val orders = orderViewModel.uiOrders.collectAsState().value
+    val isError = orderViewModel.iserror.value
+    val error = orderViewModel.error.value
+    val isLoading = orderViewModel.isloading.value
     VendorInventoryManagementTheme {
         Scaffold(
 
@@ -95,8 +98,7 @@ fun PurchaseOrderManagementScreen(modifier: Modifier = Modifier,navController: N
                     currentScreen = currentBottomScreen,)
             },
 
-            )
-        { paddingValues ->
+            ) { paddingValues ->
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
@@ -105,34 +107,30 @@ fun PurchaseOrderManagementScreen(modifier: Modifier = Modifier,navController: N
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ){
-                if(isLoading) ShowLoader("Loading Products...")
-                PurchaseText()
+                if(isLoading) ShowLoader("Loading Orders...")
+                OrdersText()
                 if(!isError){
                     LazyColumn(modifier = Modifier
                         .fillMaxSize()
-                        .padding(6.dp)) {
-                        items(products){ product ->
-                           ProductCardList(product, productviewModel, navController)
+                        .padding(6.dp))  {
+                        items(orders){order->
+                            OrdersCardList(order, orderViewModel, navController)
                         }
                     }
                 }
-
             }
+
         }
     }
-
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("ResourceAsColor")
 @Composable
-fun ProductCardList(product: Product, productviewModel: ProductManagementViewModel,navController: NavHostController){
+fun OrdersCardList(order: PurchaseOrder, orderViewModel: PurchaseOrderManagementViewModel, navController: NavHostController){
+    val cardHeaderText = order.productName+"-"+order.buyerEmail
     var expanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val delete_message = stringResource(R.string.product_deletion_success)
-    val tooltipState = rememberTooltipState()
-    val cardHeaderText = product.productCategory +"-"+product.brandName
+    val delete_message = stringResource(R.string.order_deletion_success)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -142,22 +140,18 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
     ){
-        Column(modifier = Modifier.padding(5.dp)) {
+        Column(modifier = Modifier.padding(5.dp)){
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()) {
+                modifier = Modifier.fillMaxWidth()
+            ){
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    val icon = when (product.productCategory.lowercase()){
-                        "laptops" -> Icons.Default.Laptop
-                        "phones" -> Icons.Default.PhoneAndroid
-                        "printers" -> Icons.Default.Print
-                        else -> Icons.Default.Inventory2
-                    }
+                    val icon = Icons.Default.ShoppingBag
                     Spacer(modifier = Modifier.height(8.dp))
                     Icon(
                         imageVector = icon,
-                        contentDescription = "Category Icon",
+                        contentDescription = "Order Icon",
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .size(20.dp),
@@ -166,47 +160,54 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                     Text(text = cardHeaderText, style = MaterialTheme.typography.titleMedium)
                 }
 
-                if(product.totalQuantity>0){
-                    Text(
-                        text = stringResource(R.string.in_stock),
-                        color = Color.White,
-                        modifier = Modifier
-                            .background(Color(R.color.green), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
-                        fontSize = 12.sp
-                    )
-                }else{
-                    Text(
-                        text = stringResource(R.string.out_of_stock),
-                        color = Color.White,
-                        modifier = Modifier
-                            .background(Color(R.color.red), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
-                        fontSize = 12.sp
-                    )
-                }
             }
-            Text("Stock: ${product.totalQuantity}", fontSize = 14.sp)
+            Text("Ordered Quantity: ${order.orderedQuantity}", fontSize = 14.sp)
             AnimatedVisibility(visible = expanded) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
-                    Text("Brand:${product.brandName}")
+                Column(modifier = Modifier.padding(top = 12.dp)){
+                    Text("Order ID:${order.orderId}")
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Product Name:${product.productName}")
+                    Text("Product Name:${order.productName}")
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Vendor:${product.vendorName}")
+                    Text("Total Cost:$${order.totalCost}")
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Location:${product.location}")
+                    Text("Product Location:${order.location}")
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Price:$${product.price}/unit")
+                    Text("Buyer e-mail:${order.buyerEmail}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Buyer Phone Number:${order.buyerPhoneNumber}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Delivery Address:${order.destination}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Order Placed:${order.orderPlacedDate}")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Expected Delivery:${order.expectedDeliveryDate}")
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth()){
                         IconButton(onClick = {
-                            navController.navigate("place_order/${product.id}")
+                            navController.navigate("edit_order/${order.orderId}")
                         }) {
                             Icon(
-                                imageVector = Icons.Default.ShoppingCart,
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.buy),
+                                tint = Color.White
+                            )
+                        }
+                        IconButton(onClick = {
+                            showDeleteDialog = true
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.buy),
+                                tint = Color.White
+                            )
+                        }
+                        IconButton(onClick = {
+                            navController.navigate("pay_order/${order.orderId}")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Payment,
                                 contentDescription = stringResource(R.string.buy),
                                 tint = Color.White
                             )
@@ -215,19 +216,35 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
 
                     }
                 }
-                if(product.individualQuantities.isNotEmpty()){
-                    Spacer(modifier = Modifier.height(8.dp))
-                    //Text("BreakDown:")
-                    Spacer(modifier = Modifier.height(8.dp))
-//                    product.individualQuantities.forEach{(brand, quantity) ->
-//                        Text("$brand:$quantity units")
-//                    }
-                }
-
-
-
             }
         }
     }
+    if(showDeleteDialog){
+        AlertDialog(
+            onDismissRequest = {showDeleteDialog = false},
+            title = { Text(text = stringResource(R.string.confirm_deletion_text))},
+            text = { Text(text = stringResource(R.string.confirm_Order_deletion))},
+            confirmButton = {
+                TextButton(onClick = {
+                    showDeleteDialog = false
+                    orderViewModel.deleteOrder(order)
+                    Toast.makeText(
+                        context,
+                        delete_message,
+                        Toast.LENGTH_SHORT
 
+                    ).show()
+                }) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDeleteDialog = false
+                }) {
+                    Text("No")
+                }
+            }
+        )
+    }
 }

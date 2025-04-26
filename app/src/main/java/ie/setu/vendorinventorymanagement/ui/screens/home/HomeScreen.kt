@@ -45,6 +45,8 @@ fun HomeScreen(modifier: Modifier = Modifier,navController: NavHostController){
     val currentBottomScreen =
         allDestinations.find { it.route == currentDestination?.route } ?: Home
     val currentTileScreen = listOfHomeTiles.find { it.route == currentDestination?.route }?: Home
+    val user = FirebaseAuth.getInstance().currentUser
+    val username = user?.displayName?:"Not set"
     VendorInventoryManagementTheme {
         Scaffold(
             topBar = {
@@ -65,7 +67,7 @@ fun HomeScreen(modifier: Modifier = Modifier,navController: NavHostController){
                 .padding(horizontal = 24.dp, vertical = 32.dp),
 
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Welcome to V-Share!", fontSize = 24.sp)
+                Text("Welcome $username!", fontSize = 24.sp)
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier

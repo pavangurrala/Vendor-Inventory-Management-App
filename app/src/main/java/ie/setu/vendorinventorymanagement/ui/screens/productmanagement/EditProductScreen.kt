@@ -117,7 +117,7 @@ fun EditProductScreen(modifier: Modifier = Modifier,navController: NavHostContro
                     var location by remember { mutableStateOf(product.location) }
                     var individualQuantities by remember { mutableIntStateOf(
                         product.individualQuantities.get(brandName) ?:1) }
-                    //var quantity by remember { mutableStateOf(product.totalQuantity?:"") }
+                    var quantity by remember { mutableIntStateOf(product.totalQuantity) }
                     val brands = listOf("Dell", "HP", "Apple", "Samsung", "Lenovo")
                     val categories = listOf("Laptops", "Phones", "Printers")
                     val scrollState = rememberScrollState()
@@ -137,7 +137,7 @@ fun EditProductScreen(modifier: Modifier = Modifier,navController: NavHostContro
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(text = stringResource(R.string.quantity), modifier = Modifier.weight(1f))
-                            AmountPicker(value = individualQuantities, onValueChange = {individualQuantities = it })
+                            AmountPicker(value = quantity, maximumValue = 100, onValueChange = {quantity = it })
                         }
 
                         OutlinedTextField(
@@ -164,8 +164,7 @@ fun EditProductScreen(modifier: Modifier = Modifier,navController: NavHostContro
                                     productName = productName,
                                     productCategory = productCategory,
                                     brandName = brandName,
-                                    totalQuantity = individualQuantities,
-                                    individualQuantities = mapOf(brandName to individualQuantities),
+                                    totalQuantity = quantity,
                                     price = price.toDoubleOrNull()?:0.0,
                                     vendorName = vendorName,
                                     location = location

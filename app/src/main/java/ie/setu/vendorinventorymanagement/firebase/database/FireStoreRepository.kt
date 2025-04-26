@@ -6,8 +6,11 @@ import com.google.firebase.firestore.toObject
 import ie.setu.vendorinventorymanagement.firebase.services.FirestoreService
 import ie.setu.vendorinventorymanagement.firebase.services.Product
 import ie.setu.vendorinventorymanagement.data.rules.Constants.PRODUCT_COLLECTION
+import ie.setu.vendorinventorymanagement.data.rules.Constants.PURCHASE_ORDER_COLLECTION
 import ie.setu.vendorinventorymanagement.data.rules.Constants.USER_EMAIL
 import ie.setu.vendorinventorymanagement.firebase.services.Products
+import ie.setu.vendorinventorymanagement.firebase.services.PurchaseOrder
+import ie.setu.vendorinventorymanagement.firebase.services.PurchaseOrdersList
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject
@@ -43,6 +46,35 @@ class FireStoreRepository @Inject constructor(private val firestore: FirebaseFir
     override suspend fun deleteProduct(email: String, productId: String) {
         firestore.collection(PRODUCT_COLLECTION)
             .document(productId)
+            .delete().await()
+    }
+
+    override suspend fun getAllOrders(email: String): PurchaseOrdersList {
+        return firestore.collection(PURCHASE_ORDER_COLLECTION)
+            .whereEqualTo(USER_EMAIL, email)
+            .dataObjects()
+    }
+
+    override suspend fun getOrderById(orderId: String): PurchaseOrder? {
+        return firestore.collection(PURCHASE_ORDER_COLLECTION).document(orderId).get().await().toObject()
+    }
+
+    override suspend fun addPurchaseOrder(email: String, purchaseOrder: PurchaseOrder) {
+        val addPurchaseOrderWithEmail = purchaseOrder.copy(email = email)
+        val newDocument = firestore.collection(PURCHASE_ORDER_COLLECTION).document()
+        val addPurchaseOrderWithId = addPurchaseOrderWithEmail.copy(orderId = newDocument.id)
+        newDocument.set(addPurchaseOrderWithId).await()
+    }
+
+    override suspend fun updatePurchaseOrder(email: String, purchaseOrder: PurchaseOrder) {
+        val editOrderWithModifiedDate = purchaseOrder.copy(orderModifiedDate = Date())
+        firestore.collection(PURCHASE_ORDER_COLLECTION)
+            .document(purchaseOrder.orderId)
+            .set(editOrderWithModifiedDate).await()
+    }
+    override suspend fun deleteOrder(email: String, orderId: String) {
+        firestore.collection(PURCHASE_ORDER_COLLECTION)
+            .document(orderId)
             .delete().await()
     }
 

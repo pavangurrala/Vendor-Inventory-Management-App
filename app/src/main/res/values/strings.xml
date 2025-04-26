@@ -6,6 +6,7 @@
     <string name="out_of_stock">Out of Stock</string>
     <string name="add_product">Add Product</string>
     <string name="product_name">Product Name</string>
+    <string name="brand_name">Brand Name</string>
     <string name="quantity">Quantity</string>
     <string name="price">Price per Unit</string>
     <string name="vendor_name">Vendor Name</string>
@@ -20,4 +21,24 @@
     <string name="no_product">Product Not Found!  </string>
     <string name="add_success">Product Added  </string>
     <string name="update_success">Product Updated  </string>
+    <string name="update_order_success">Order Updated  </string>
+    <string name="purchase_products">Purchase Products</string>
+    <string name="purchase_order">Purchase Orders</string>
+    <string name="buy">Buy</string>
+    <string name="units_req">Units Required</string>
+    <string name="destination">Destination</string>
+    <string name="eta">Expected Delivery</string>
+    <string name="ok">OK</string>
+    <string name="orders">Orders</string>
+    <string name="place_order">Place Order</string>
+    <string name="order_placed">Order Placed!</string>
+    <string name="order_placed_success">You will now be redirected to payment page to complete your order!</string>
+    <string name="order_deletion_success">Order Deleted Successfully! </string>
+    <string name="order_update_success">Order Updated Successfully! </string>
+    <string name="confirm_Order_deletion">Do you want to cancel this order? </string>
+    <string name="buyer_email">Buyer E-Mail</string>
+    <string name="buyer_phone_number">Buyer Phone Number</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_quantity">Quantity Ordered</string>
+    <string name="total_cost">Total Cost</string>
 </resources>

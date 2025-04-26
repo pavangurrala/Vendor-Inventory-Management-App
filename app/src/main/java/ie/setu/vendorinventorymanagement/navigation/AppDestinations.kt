@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Inventory
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material.icons.sharp.Assessment
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.sharp.Dashboard
 import androidx.compose.material.icons.sharp.Edit
 import androidx.compose.material.icons.sharp.Home
 import androidx.compose.material.icons.sharp.Person
+import androidx.compose.material.icons.sharp.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 interface AppDestination {
     val icon: ImageVector
@@ -40,7 +43,7 @@ object ProductManagement : AppDestination {
 }
 object PurchaseOrderManagement : AppDestination {
     override val icon = Icons.Filled.ShoppingCart
-    override val label = "Purchase Orders"
+    override val label = "Buy Products"
     override val route = "purchaseordermanagement"
 }
 object PaymentManagement : AppDestination {
@@ -73,8 +76,29 @@ object EditProduct: AppDestination{
     override val label = "Edit Product"
     override val route = "edit_product/{productId}"
 }
+object PlaceOrder: AppDestination{
+    override val icon = Icons.Sharp.ShoppingCart
+    override val label = "Place Order"
+    override val route = "place_order/{productId}"
+}
+object EditOrder: AppDestination{
+    override val icon = Icons.Sharp.Edit
+    override val label = "Edit Order"
+    override val route = "edit_order/{orderId}"
+}
+object Orders: AppDestination{
+    override val icon = Icons.Default.ShoppingBag
+    override val label = "Orders"
+    override val route = "purchased_orders"
+}
+object Maps: AppDestination{
+    override val icon = Icons.Default.LocationOn
+    override val label = "Maps"
+    override val route = "maps"
+}
 
-val bottomAppBarDestinations = listOf(Home,Profile )
-val allDestinations = listOf(Home, Profile)
-val listOfHomeTiles = listOf(ProductManagement, StockTracking, PurchaseOrderManagement, PaymentManagement)
-val linkingScreens = listOf(AddProduct, EditProduct)
+
+val bottomAppBarDestinations = listOf(Home,Orders,Profile)
+val allDestinations = listOf(Home,Orders, Profile)
+val listOfHomeTiles = listOf(ProductManagement, StockTracking, PurchaseOrderManagement, PaymentManagement, Orders, Maps)
+val linkingScreens = listOf(AddProduct,EditProduct,PlaceOrder, EditOrder)

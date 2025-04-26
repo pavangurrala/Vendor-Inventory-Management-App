@@ -116,7 +116,7 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(text = stringResource(R.string.quantity), modifier = Modifier.weight(1f))
-                        AmountPicker(value = individualQuantities, onValueChange = {individualQuantities = it })
+                        AmountPicker(value = individualQuantities,maximumValue=100, onValueChange = {individualQuantities = it })
                     }
                     OutlinedTextField(
                         value = price,

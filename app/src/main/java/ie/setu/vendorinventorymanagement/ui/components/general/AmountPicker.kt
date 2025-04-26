@@ -9,12 +9,12 @@ import androidx.compose.ui.viewinterop.AndroidView
 import android.widget.NumberPicker
 
 @Composable
-fun AmountPicker(value:Int, onValueChange: (Int) -> Unit){
+fun AmountPicker(value:Int, maximumValue:Int, onValueChange: (Int) -> Unit){
     AndroidView(
         factory = {context ->
             NumberPicker(context).apply {
                 minValue = 1
-                maxValue = 100
+                maxValue = maximumValue
                 this.value = value
                 setOnValueChangedListener{_,_,newValue ->
                     onValueChange(newValue)

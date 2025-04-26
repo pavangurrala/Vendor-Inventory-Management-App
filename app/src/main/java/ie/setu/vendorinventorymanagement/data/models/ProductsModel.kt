@@ -18,5 +18,5 @@ data class ProductsModel(
     val dateAdded : Date = Date(),
     val dateUpdated: Date = Date(),
     val individualQuantities: Map<String, Int> = emptyMap(),
-    val price: Double = 0.0
+    val price: Double = 0.0,
 )
