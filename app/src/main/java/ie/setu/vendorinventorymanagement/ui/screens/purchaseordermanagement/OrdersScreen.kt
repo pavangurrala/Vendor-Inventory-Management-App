@@ -126,7 +126,7 @@ fun OrdersScreen(modifier: Modifier = Modifier,navController: NavHostController,
 
 @Composable
 fun OrdersCardList(order: PurchaseOrder, orderViewModel: PurchaseOrderManagementViewModel, navController: NavHostController){
-    val cardHeaderText = order.productName+"-"+order.buyerEmail
+    val cardHeaderText = order.productName+"-"+order.orderId.takeLast(5)
     var expanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -153,37 +153,64 @@ fun OrdersCardList(order: PurchaseOrder, orderViewModel: PurchaseOrderManagement
                         imageVector = icon,
                         contentDescription = "Order Icon",
                         modifier = Modifier
-                            .padding(end = 8.dp)
+                            .padding(8.dp)
                             .size(20.dp),
                         tint = Color.White
                     )
-                    Text(text = cardHeaderText, style = MaterialTheme.typography.titleMedium)
+                    Text(text = cardHeaderText, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(8.dp))
                 }
 
             }
-            Text("Ordered Quantity: ${order.orderedQuantity}", fontSize = 14.sp)
+            Text("Ordered Quantity: ${order.orderedQuantity}", fontSize = 14.sp, modifier = Modifier.padding(8.dp))
             AnimatedVisibility(visible = expanded) {
-                Column(modifier = Modifier.padding(top = 12.dp)){
-                    Text("Order ID:${order.orderId}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Product Name:${order.productName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Total Cost:$${order.totalCost}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Product Location:${order.location}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Buyer e-mail:${order.buyerEmail}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Buyer Phone Number:${order.buyerPhoneNumber}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Delivery Address:${order.destination}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Order Placed Date:${order.orderPlacedDate}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Expected Delivery:${order.expectedDeliveryDate}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Payment:${order.payment}")
-                    Spacer(modifier = Modifier.height(8.dp))
+                Column(modifier = Modifier.padding(12.dp)){
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Order ID")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Product Name")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Total Cost")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Product Location")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Delivery Address")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Order Placed Date")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Expected Delivery")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Payment")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Buyer Phone")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Buyer e-mail")
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(order.orderId.takeLast(5))
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.productName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("$${order.totalCost}")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.location)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.destination)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.orderPlacedDate)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.expectedDeliveryDate)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.payment)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.buyerPhoneNumber)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(order.buyerEmail)
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+
                     Row(
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth()){

@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
 import ie.setu.vendorinventorymanagement.navigation.Profile
 import ie.setu.vendorinventorymanagement.ui.components.general.BottomAppBarProvider
@@ -64,12 +65,19 @@ fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text("Profile!", fontSize = 24.sp)
+                Text("Profile", fontSize = 30.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("UserName:$username", fontSize = 20.sp)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("Email:$email", fontSize = 20.sp)
+                Image(
+                    painter = painterResource(id = R.drawable.aboutus_homer),
+                    contentDescription = "Profile Page",
+                    modifier = Modifier.size(350.dp)
+
+                )
                 Spacer(modifier = Modifier.height(24.dp))
+                Text(username, fontSize = 20.sp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(email, fontSize = 20.sp)
+                Spacer(modifier = Modifier.height(48.dp))
                 Button(onClick = {
                     FirebaseAuth.getInstance().signOut()
                     navController.navigate("login") {

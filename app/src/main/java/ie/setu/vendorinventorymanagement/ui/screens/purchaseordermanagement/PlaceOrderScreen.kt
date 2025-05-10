@@ -123,7 +123,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                             product.individualQuantities.get(brandName) ?:1) }
                         val quantity by remember { mutableIntStateOf(product.totalQuantity) }
                         var destination by remember { mutableStateOf("") }
-                        var buyerEmail by remember { mutableStateOf("") }
+                        var buyerEmail by remember { mutableStateOf(product.email) }
                         var buyerPhoneNumber by remember { mutableStateOf("") }
                         val totalCost = orderQuantity * price
 
@@ -147,21 +147,21 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                                 onValueChange = {},
                                 label = { Text(text = stringResource(R.string.brand_name))},
                                 modifier = Modifier.fillMaxWidth(),
-                                enabled = false
+                                readOnly = true
                             )
                             OutlinedTextField(
                                 value = vendorName,
                                 onValueChange = {},
                                 label = { Text(text = stringResource(R.string.vendor_name))},
                                 modifier = Modifier.fillMaxWidth(),
-                                enabled = false
+                                readOnly = true
                             )
                             OutlinedTextField(
                                 value = location,
                                 onValueChange = {},
                                 label = { Text(text = stringResource(R.string.location))},
                                 modifier = Modifier.fillMaxWidth(),
-                                enabled = false
+                                readOnly = true
                             )
                             Text("Available Units: $quantity")
                             Text("Price per Unit: $price")
@@ -174,9 +174,10 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                             }
                             OutlinedTextField(
                                 value = buyerEmail,
-                                onValueChange = {buyerEmail = it},
+                                onValueChange = {},
                                 label = { Text(text = stringResource(R.string.buyer_email))},
                                 modifier = Modifier.fillMaxWidth(),
+                                readOnly = true
                             )
                             OutlinedTextField(
                                 value = buyerPhoneNumber,
@@ -195,7 +196,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
                                 onValueChange = {},
                                 label = { Text(text = stringResource(R.string.eta))},
                                 modifier = Modifier.fillMaxWidth(),
-                                enabled = false
+                                readOnly = true
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             Button(

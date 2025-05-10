@@ -1,9 +1,12 @@
 package ie.setu.vendorinventorymanagement.ui.screens.productmanagement
 
 import android.annotation.SuppressLint
+import android.widget.Space
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,12 +20,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.PhoneAndroid
@@ -65,6 +70,9 @@ import ie.setu.vendorinventorymanagement.ui.components.products.ProductText
 import ie.setu.vendorinventorymanagement.R
 import ie.setu.vendorinventorymanagement.firebase.services.Product
 
+
+import androidx.compose.material3.DropdownMenuItem
+
 @Composable
 fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHostController, productviewModel: ProductManagementViewModel = hiltViewModel()){
     var selectedMenuItem by remember { mutableStateOf<MenuItem?>(MenuItem.StockTracking) }
@@ -77,6 +85,14 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
     val isError = productviewModel.iserror.value
     val error = productviewModel.error.value
     val isLoading = productviewModel.isloading.value
+    var filterOption by remember { mutableStateOf("All") }
+    val filterOptions = listOf("All", "In Stock", "Out of Stock")
+
+    val filteredProducts = when(filterOption){
+        "In Stock"-> products.filter{it.totalQuantity>0}
+        "Out of Stock"-> products.filter { it.totalQuantity<=0 }
+        else->products
+    }
     VendorInventoryManagementTheme {
         Scaffold(
 
@@ -102,6 +118,7 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
                     .padding(paddingValues)
                     .padding(horizontal = 10.dp, vertical = 5.dp)
             ){
+
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 5.dp)
@@ -110,9 +127,46 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
 
                     ){
 //                    Text("ADD PRODUCTS", fontSize = 24.sp)
-                    if(isLoading) ShowLoader("Loading Products...")
                     ProductText()
-                    if(products.isEmpty() && !isError)
+                    if(isLoading) ShowLoader("Loading Products...")
+
+                    var expanded by remember { mutableStateOf(false) }
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .border(BorderStroke(1.dp, Color.Gray), shape = MaterialTheme.shapes.small)
+                            .padding(8.dp),
+
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Icon(
+                            imageVector = Icons.Default.FilterAlt,
+                            contentDescription = "Filter",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Box{
+                            TextButton(onClick = {expanded = true}) {
+                                Text(filterOption)
+                            }
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = {expanded = false},
+                                modifier = Modifier.border(BorderStroke(1.dp, Color.LightGray))
+                            ){
+                                filterOptions.forEach{option->
+                                    DropdownMenuItem(
+                                        text={Text(option)},
+                                        onClick={
+                                            filterOption = option
+                                            expanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    if(filteredProducts.isEmpty()&&!isError){
                         Centre(Modifier.fillMaxSize()) {
                             Text(
                                 color = MaterialTheme.colorScheme.secondary,
@@ -122,14 +176,26 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
                                 textAlign = TextAlign.Center,
                                 text = stringResource(R.string.empty_list)
                             )
-
-
                         }
+                    }
+//                    if(products.isEmpty() && !isError)
+//                        Centre(Modifier.fillMaxSize()) {
+//                            Text(
+//                                color = MaterialTheme.colorScheme.secondary,
+//                                fontWeight = FontWeight.Bold,
+//                                fontSize = 30.sp,
+//                                lineHeight = 34.sp,
+//                                textAlign = TextAlign.Center,
+//                                text = stringResource(R.string.empty_list)
+//                            )
+//
+//
+//                        }
                     if(!isError){
                         LazyColumn(modifier = Modifier
                             .fillMaxSize()
                             .padding(6.dp)) {
-                            items(products){ product ->
+                            items(filteredProducts){ product ->
                                 ProductCardList(product, productviewModel, navController)
                             }
                         }
@@ -164,7 +230,7 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
     val context = LocalContext.current
     val delete_message = stringResource(R.string.product_deletion_success)
     val tooltipState = rememberTooltipState()
-    val cardHeaderText = product.productCategory +"-"+product.brandName
+    val cardHeaderText = product.productCategory +" - "+product.brandName
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -191,7 +257,7 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                         imageVector = icon,
                         contentDescription = "Category Icon",
                         modifier = Modifier
-                            .padding(end = 8.dp)
+                            .padding(8.dp)
                             .size(20.dp),
                         tint = Color.White
                     )
@@ -204,7 +270,7 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                         color = Color.White,
                         modifier = Modifier
                             .background(Color(R.color.green), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .padding(10.dp),
                         fontSize = 12.sp
                     )
                 }else{
@@ -213,24 +279,50 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                         color = Color.White,
                         modifier = Modifier
                             .background(Color(R.color.red), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .padding(10.dp),
                         fontSize = 12.sp
                     )
                 }
             }
-            Text("Stock: ${product.totalQuantity}", fontSize = 14.sp)
+            Text("Stock: ${product.totalQuantity}", fontSize = 14.sp, modifier = Modifier.padding(8.dp))
             AnimatedVisibility(visible = expanded) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
-                    Text("Brand:${product.brandName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Product Name:${product.productName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Vendor:${product.vendorName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Location:${product.location}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Price:$${product.price}/unit")
-                    Spacer(modifier = Modifier.height(8.dp))
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Brand")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Product Name")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Vendor")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Location")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Price")
+
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(product.brandName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(product.productName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(product.vendorName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(product.location)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("$${product.price}/unit")
+
+                        }
+                    }
+//                    Text("Brand:${product.brandName}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Product Name:${product.productName}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Vendor:${product.vendorName}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Location:${product.location}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Price:$${product.price}/unit")
+//                    Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth()){

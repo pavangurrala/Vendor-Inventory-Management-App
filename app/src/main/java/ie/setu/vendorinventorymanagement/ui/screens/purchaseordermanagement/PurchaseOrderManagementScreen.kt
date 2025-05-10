@@ -159,7 +159,7 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                         imageVector = icon,
                         contentDescription = "Category Icon",
                         modifier = Modifier
-                            .padding(end = 8.dp)
+                            .padding(8.dp)
                             .size(20.dp),
                         tint = Color.White
                     )
@@ -172,7 +172,7 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                         color = Color.White,
                         modifier = Modifier
                             .background(Color(R.color.green), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
                         fontSize = 12.sp
                     )
                 }else{
@@ -181,36 +181,73 @@ fun ProductCardList(product: Product, productviewModel: ProductManagementViewMod
                         color = Color.White,
                         modifier = Modifier
                             .background(Color(R.color.red), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
                         fontSize = 12.sp
                     )
                 }
             }
-            Text("Stock: ${product.totalQuantity}", fontSize = 14.sp)
+            Text("Stock: ${product.totalQuantity}", fontSize = 14.sp, modifier = Modifier.padding(8.dp))
             AnimatedVisibility(visible = expanded) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
-                    Text("Brand:${product.brandName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Product Name:${product.productName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Vendor:${product.vendorName}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Location:${product.location}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Price:$${product.price}/unit")
-                    Spacer(modifier = Modifier.height(8.dp))
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Brand")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Product Name")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Vendor")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Location")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Price")
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(product.brandName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(product.productName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(product.vendorName)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(product.location)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("$${product.price}/unit")
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+//                    Text("Brand:${product.brandName}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Product Name:${product.productName}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Vendor:${product.vendorName}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Location:${product.location}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text("Price:$${product.price}/unit")
+//                    Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth()){
-                        IconButton(onClick = {
-                            navController.navigate("place_order/${product.id}")
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.ShoppingCart,
-                                contentDescription = stringResource(R.string.buy),
-                                tint = Color.White
-                            )
+                        if(product.totalQuantity>0){
+                            IconButton(onClick = {
+                                navController.navigate("place_order/${product.id}")
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = stringResource(R.string.buy),
+                                    tint = Color.White
+                                )
+                            }
+                        }else{
+                            IconButton(onClick = {}) {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = stringResource(R.string.buy),
+                                    tint = Color.Gray.copy(alpha = 0.5f)
+                                )
+                            }
                         }
+
 
 
                     }

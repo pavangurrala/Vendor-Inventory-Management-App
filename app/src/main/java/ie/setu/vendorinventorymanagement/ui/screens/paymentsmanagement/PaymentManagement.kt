@@ -86,7 +86,7 @@ fun PaymentManagementScreen(modifier: Modifier = Modifier,navController: NavHost
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ){
-                if(isLoading) ShowLoader("Loading Orders...")
+                if(isLoading) ShowLoader("Loading Payments...")
                 PaymentsText()
                 if(!isError){
                     LazyColumn(modifier = Modifier
@@ -105,7 +105,7 @@ fun PaymentManagementScreen(modifier: Modifier = Modifier,navController: NavHost
 }
 @Composable
 fun PaymentCardList(payment: Payment){
-    val cardHeaderText = payment.paymentId
+    val cardHeaderText =payment.productName +" - "+payment.paymentId.takeLast(5)
     var expanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -125,29 +125,50 @@ fun PaymentCardList(payment: Payment){
                 imageVector = icon,
                 contentDescription = "Paid Icon",
                 modifier = Modifier
-                    .padding(end = 8.dp)
+                    .padding(8.dp)
                     .size(20.dp),
                 tint = Color.White
             )
-            Text(text = cardHeaderText, style = MaterialTheme.typography.titleMedium)
+            Text(text = cardHeaderText, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(8.dp))
         }
-        Text("Payment Status: ${payment.paymentStatus}", fontSize = 14.sp)
+        Text("Payment Status: ${payment.paymentStatus}", fontSize = 14.sp, modifier = Modifier.padding(10.dp))
         AnimatedVisibility(visible = expanded){
-            Column(modifier = Modifier.padding(top = 12.dp)){
-                Text("Order ID:${payment.orderId}")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Product Name:${payment.productName}")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Ordered Quantity:${payment.orderedQuantity}")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Total Cost:$${payment.totalCost}")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Payment Method:${payment.paymentMethod}")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Payment Date:${payment.paymentDate}")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Buyer Email:${payment.buyerEmail}")
-                Spacer(modifier = Modifier.height(8.dp))
+            Column(modifier = Modifier.padding(12.dp)){
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Order ID")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Product Name")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Ordered Quantity")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Total Cost")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Payment Method")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Payment Date")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Buyer Email")
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(payment.orderId.takeLast(5))
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(payment.productName)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(payment.orderedQuantity.toString())
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("$${payment.totalCost}")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(payment.paymentMethod)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(payment.paymentDate)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(payment.buyerEmail)
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
             }
         }
     }
