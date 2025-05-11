@@ -23,8 +23,6 @@ An Android application built using **Jetpack Compose**, **Firebase**, and **MVVM
 - **Firebase Firestore**, **Firebase Auth**
 - **MVVM Architecture**
 - **Hilt** for Dependency Injection
-- **DataStore** for theme preferences
-- **Google Maps SDK**
 - **Navigation Component**
 
 ---
