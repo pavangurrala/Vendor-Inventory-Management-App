@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import ie.setu.vendorinventorymanagement.R
 import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -33,8 +34,9 @@ import ie.setu.vendorinventorymanagement.navigation.allDestinations
 import ie.setu.vendorinventorymanagement.ui.components.general.MenuItem
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavHostController
+import ie.setu.vendorinventorymanagement.ui.screens.darkmode.DarkModeViewModel
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController){
+fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController, darkModeViewModel: DarkModeViewModel = hiltViewModel()){
     val user = FirebaseAuth.getInstance().currentUser
     val email = user?.email?:"Not available"
     val username = user?.displayName?:"Not set"
@@ -43,7 +45,8 @@ fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController
     val currentDestination = currentNavBackStackEntry?.destination
     val currentBottomScreen =
         allDestinations.find { it.route == currentDestination?.route } ?: Profile
-    VendorInventoryManagementTheme {
+    val isDarkMode by darkModeViewModel.isDarkMode.collectAsState()
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -67,6 +70,13 @@ fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController
             ) {
                 Text("Profile", fontSize = 30.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically){
+                    Text("Dark Mode")
+                    Switch(
+                        checked = isDarkMode,
+                        onCheckedChange = {darkModeViewModel.setDarkMode(it)}
+                    )
+                }
                 Image(
                     painter = painterResource(id = R.drawable.aboutus_homer),
                     contentDescription = "Profile Page",
@@ -90,5 +100,5 @@ fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController
             }
 
         }
-    }
+
 }

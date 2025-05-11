@@ -45,7 +45,7 @@ fun StockTrackingScreen(modifier: Modifier = Modifier,navController: NavHostCont
         allDestinations.find { it.route == currentDestination?.route } ?: Home
     val currentTileScreen = listOfHomeTiles.find { it.route == currentDestination?.route }?:Home
     val products = productViewModel.uiProducts.collectAsState().value
-    VendorInventoryManagementTheme {
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -105,7 +105,7 @@ fun StockTrackingScreen(modifier: Modifier = Modifier,navController: NavHostCont
 
             }
         }
-    }
+
 
 }
 @Composable

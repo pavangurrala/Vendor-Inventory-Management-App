@@ -108,7 +108,7 @@ fun PaymentsPage(modifier: Modifier = Modifier,
     var addPaymentSuccess by remember { mutableStateOf(false) }
     val paymentOrderState by purchaseOrderViewModel.editOrders.collectAsState()
     Timber.tag("OrderPaymentEdit").d("Order for Payment Exists: $paymentOrderState")
-    VendorInventoryManagementTheme {
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -245,5 +245,5 @@ fun PaymentsPage(modifier: Modifier = Modifier,
                     }
             }
         }
-    }
+
 }

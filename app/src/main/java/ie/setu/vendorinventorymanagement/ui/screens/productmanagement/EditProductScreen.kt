@@ -71,7 +71,7 @@ fun EditProductScreen(modifier: Modifier = Modifier,navController: NavHostContro
         viewModel.getProductById(productId)
     }
     val existingProductState by viewModel.editProducts.collectAsState()
-    VendorInventoryManagementTheme {
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -203,5 +203,5 @@ fun EditProductScreen(modifier: Modifier = Modifier,navController: NavHostContro
                 }
             }
         }
-    }
+
 }

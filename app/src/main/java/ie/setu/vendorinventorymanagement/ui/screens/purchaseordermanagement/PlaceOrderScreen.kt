@@ -89,7 +89,7 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
     var orderQuantity by remember { mutableIntStateOf(1) }
     var addPurchaseOrderSuccess by remember { mutableStateOf(false) }
     val purchaseProductState by viewModel.editProducts.collectAsState()
-    VendorInventoryManagementTheme {
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -247,5 +247,5 @@ fun PlaceOrderScreen(modifier: Modifier = Modifier,
             }
 
         }
-    }
+
 }

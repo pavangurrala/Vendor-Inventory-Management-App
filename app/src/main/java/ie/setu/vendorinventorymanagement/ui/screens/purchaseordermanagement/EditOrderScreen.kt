@@ -87,7 +87,7 @@ fun EditOrderScreen(modifier: Modifier = Modifier,
     }
     val existingOrdersState by purchaseOrderViewModel.editOrders.collectAsState()
     Timber.tag("OrderEdit").d("Order Exists: $existingOrdersState")
-    VendorInventoryManagementTheme {
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -233,5 +233,5 @@ fun EditOrderScreen(modifier: Modifier = Modifier,
             }
 
         }
-    }
+
 }

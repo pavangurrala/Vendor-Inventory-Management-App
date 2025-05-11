@@ -82,7 +82,7 @@ fun OrdersScreen(modifier: Modifier = Modifier,navController: NavHostController,
     val isError = orderViewModel.iserror.value
     val error = orderViewModel.error.value
     val isLoading = orderViewModel.isloading.value
-    VendorInventoryManagementTheme {
+
         Scaffold(
 
             topBar = {
@@ -121,7 +121,7 @@ fun OrdersScreen(modifier: Modifier = Modifier,navController: NavHostController,
             }
 
         }
-    }
+
 }
 
 @Composable

@@ -93,7 +93,7 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
         "Out of Stock"-> products.filter { it.totalQuantity<=0 }
         else->products
     }
-    VendorInventoryManagementTheme {
+
         Scaffold(
 
             topBar = {
@@ -217,7 +217,7 @@ fun ProductManagementScreen(modifier: Modifier = Modifier,navController: NavHost
 
         }
 
-    }
+
 
 }
 

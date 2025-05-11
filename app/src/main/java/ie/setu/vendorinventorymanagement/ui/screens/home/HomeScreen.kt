@@ -47,7 +47,7 @@ fun HomeScreen(modifier: Modifier = Modifier,navController: NavHostController){
     val currentTileScreen = listOfHomeTiles.find { it.route == currentDestination?.route }?: Home
     val user = FirebaseAuth.getInstance().currentUser
     val username = user?.displayName?:"Not set"
-    VendorInventoryManagementTheme {
+
         Scaffold(
             topBar = {
                 TopAppBarProvider(
@@ -105,6 +105,6 @@ fun HomeScreen(modifier: Modifier = Modifier,navController: NavHostController){
                 }
             }
         }
-    }
+
 
 }

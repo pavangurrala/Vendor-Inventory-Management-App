@@ -60,7 +60,7 @@ fun PaymentManagementScreen(modifier: Modifier = Modifier,navController: NavHost
     val payments  = paymentManagementViewModel.uiPayments.collectAsState().value
     val isLoading = paymentManagementViewModel.isloading.value
     val isError = paymentManagementViewModel.iserror.value
-    VendorInventoryManagementTheme {
+
         Scaffold(
 
             topBar = {
@@ -100,7 +100,7 @@ fun PaymentManagementScreen(modifier: Modifier = Modifier,navController: NavHost
 
             }
         }
-    }
+
 
 }
 @Composable

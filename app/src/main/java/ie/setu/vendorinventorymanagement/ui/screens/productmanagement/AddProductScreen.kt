@@ -57,7 +57,7 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
         allDestinations.find { it.route == currentDestination?.route } ?: Home
     val currentTileScreen = linkingScreens.find { it.route == currentDestination?.route }?:Home
     var addProductSuccessDialog by remember { mutableStateOf(false) }
-    VendorInventoryManagementTheme {
+
         Scaffold(
 
             topBar = {
@@ -182,5 +182,5 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                 }
             }
         }
-    }
+
 }

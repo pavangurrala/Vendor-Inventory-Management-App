@@ -79,7 +79,7 @@ fun PurchaseOrderManagementScreen(modifier: Modifier = Modifier,navController: N
     val isError = productviewModel.iserror.value
     val error = productviewModel.error.value
     val isLoading = productviewModel.isloading.value
-    VendorInventoryManagementTheme {
+
         Scaffold(
 
             topBar = {
@@ -119,7 +119,7 @@ fun PurchaseOrderManagementScreen(modifier: Modifier = Modifier,navController: N
 
             }
         }
-    }
+
 
 }
 
