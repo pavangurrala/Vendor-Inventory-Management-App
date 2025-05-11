@@ -136,7 +136,8 @@ fun PaymentsPage(modifier: Modifier = Modifier,
                         val productName by remember { mutableStateOf(order.productName) }
                         val totalCost by remember { mutableDoubleStateOf(order.totalCost) }
                         val orderedQuantity by remember { mutableIntStateOf(order.orderedQuantity) }
-                        var buyerEmail by remember { mutableStateOf("") }
+                        val destination by remember { mutableStateOf(order.destination) }
+                        val buyerEmail by remember { mutableStateOf(order.buyerEmail) }
                         val scrollState = rememberScrollState()
                         Column(
                             modifier = Modifier
@@ -148,7 +149,7 @@ fun PaymentsPage(modifier: Modifier = Modifier,
                             OutlinedTextField(
                                 value = orderId,
                                 onValueChange = {},
-                                label = { Text(text = stringResource(R.string.product_name))},
+                                label = { Text(text = stringResource(R.string.order_id))},
                                 modifier = Modifier.fillMaxWidth(),
                                 readOnly = true
                             )
@@ -174,11 +175,11 @@ fun PaymentsPage(modifier: Modifier = Modifier,
                                 readOnly = true
                             )
                             OutlinedTextField(
-                                value = buyerEmail,
-                                onValueChange = {buyerEmail = it},
-                                label = { Text(text = stringResource(R.string.product_name))},
+                                value = destination,
+                                onValueChange = {},
+                                label = { Text(text = stringResource(R.string.destination))},
                                 modifier = Modifier.fillMaxWidth(),
-
+                                readOnly = true
                             )
                             Spacer(modifier = Modifier.height(8.dp))
 

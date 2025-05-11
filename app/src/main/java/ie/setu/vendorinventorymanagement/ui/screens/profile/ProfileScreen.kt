@@ -18,9 +18,11 @@ import com.google.firebase.auth.FirebaseAuth
 import ie.setu.vendorinventorymanagement.R
 import ie.setu.vendorinventorymanagement.ui.theme.VendorInventoryManagementTheme
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Alignment
@@ -70,24 +72,47 @@ fun ProfileScreen(modifier: Modifier = Modifier,navController: NavHostController
             ) {
                 Text("Profile", fontSize = 30.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(verticalAlignment = Alignment.CenterVertically){
-                    Text("Dark Mode")
-                    Switch(
-                        checked = isDarkMode,
-                        onCheckedChange = {darkModeViewModel.setDarkMode(it)}
-                    )
-                }
+//                Row(verticalAlignment = Alignment.CenterVertically){
+//                    Text("Dark Mode")
+//                    Switch(
+//                        checked = isDarkMode,
+//                        onCheckedChange = {darkModeViewModel.setDarkMode(it)}
+//                    )
+//                }
                 Image(
                     painter = painterResource(id = R.drawable.aboutus_homer),
                     contentDescription = "Profile Page",
-                    modifier = Modifier.size(350.dp)
+                    modifier = Modifier.size(300.dp)
 
                 )
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(username, fontSize = 20.sp)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(email, fontSize = 20.sp)
-                Spacer(modifier = Modifier.height(48.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text("Username", fontSize = 18.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text("E-mail", fontSize = 18.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text("Dark Mode", fontSize = 18.sp)
+
+                    }
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(username, fontSize = 18.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(email, fontSize = 20.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Switch(
+                            checked = isDarkMode,
+                            onCheckedChange = {darkModeViewModel.setDarkMode(it)}
+                        )
+
+                    }
+                }
+//                Spacer(modifier = Modifier.height(24.dp))
+//                Text(username, fontSize = 20.sp)
+//                Spacer(modifier = Modifier.height(16.dp))
+//                Text(email, fontSize = 20.sp)
+                Spacer(modifier = Modifier.height(12.dp))
                 Button(onClick = {
                     FirebaseAuth.getInstance().signOut()
                     navController.navigate("login") {

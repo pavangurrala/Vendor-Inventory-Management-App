@@ -140,7 +140,7 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                     Button(
                         onClick = {
                             val product = Product(
-                                productName = productName,
+                                productName = "$brandName - $productName",
                                 productCategory = productCategory,
                                 brandName = brandName,
                                 totalQuantity = individualQuantities,

@@ -23,6 +23,7 @@ import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.Edit
 import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.PlaceOrderScreen
 import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.OrdersScreen
 import ie.setu.vendorinventorymanagement.ui.screens.paymentsmanagement.PaymentsPage
+import ie.setu.vendorinventorymanagement.ui.screens.splashscreen.SplashScreen
 @Composable
 fun AppNavgraph(
     modifier: Modifier,
@@ -30,7 +31,8 @@ fun AppNavgraph(
     paddingValues: PaddingValues,
 
 ){
-    NavHost(navController = navController, startDestination = Login.route, modifier = Modifier.padding(paddingValues = paddingValues)){
+    NavHost(navController = navController, startDestination = "splash", modifier = Modifier.padding(paddingValues = paddingValues)){
+        composable(route = "splash"){ SplashScreen(navController)}
         composable(route = Login.route){ LoginScreen(navController)}
         composable(route = SignUp.route) { SignupScreen(navController) }
         composable(route = ProductManagement.route) { ProductManagementScreen(modifier = modifier, navController = navController) }

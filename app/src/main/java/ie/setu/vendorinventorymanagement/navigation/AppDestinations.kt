@@ -106,6 +106,7 @@ object Maps: AppDestination{
 }
 
 
+
 val bottomAppBarDestinations = listOf(Home,Orders,PaymentManagement,Profile)
 val allDestinations = listOf(Home,Orders, PaymentManagement,Profile)
 val listOfHomeTiles = listOf(ProductManagement, StockTracking, PurchaseOrderManagement, PaymentManagement, Orders, Maps)
