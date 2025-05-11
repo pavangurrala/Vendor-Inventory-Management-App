@@ -1,4 +1,4 @@
-# 📦 Vendor Inventory Management App
+# Vendor Inventory Management App
 
 An Android application built using **Jetpack Compose**, **Firebase**, and **MVVM architecture** to help vendors manage product inventory, place orders, process payments, and track stock — all from a sleek and intuitive UI.
 
