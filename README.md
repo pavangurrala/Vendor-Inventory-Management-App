@@ -32,9 +32,8 @@ An Android application built using **Jetpack Compose**, **Firebase**, and **MVVM
 ## Getting Started
 
 1. **Clone the Repo**
-   ```bash
-   git clone https://github.com/your-username/vendor-inventory-management.git
-   cd vendor-inventory-management
+-  git clone https://github.com/your-username/vendor-inventory-management.git
+-  cd vendor-inventory-management
 2. **Setup Firebase**
 -  Add your google-services.json in the app/ directory.
 -  Enable Authentication and Firestore in Firebase Console.
