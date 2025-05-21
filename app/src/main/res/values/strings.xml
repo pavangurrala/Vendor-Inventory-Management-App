@@ -49,4 +49,6 @@
     <string name="payment_success">Payment SuccessFull!</string>
     <string name="payment_order_success">Your Order is placed </string>
     <string name="stock_tracker">Stock Tracker</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoicGF2YW5nIiwiYSI6ImNtYXNmcTJ5NTBndncyanM5c3p6ajY0NzkifQ.8mkkNFxEiFHJ6O3-vjGe1w</string>
+
 </resources>

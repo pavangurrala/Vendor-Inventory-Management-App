@@ -11,7 +11,6 @@ plugins {
 android {
     namespace = "ie.setu.vendorinventorymanagement"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "ie.setu.vendorinventorymanagement"
         minSdk = 31
@@ -83,7 +82,9 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.gson)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-
+    //maps
+    implementation("com.mapbox.maps:android:11.12.0")
+    implementation("com.mapbox.extension:maps-compose:11.12.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

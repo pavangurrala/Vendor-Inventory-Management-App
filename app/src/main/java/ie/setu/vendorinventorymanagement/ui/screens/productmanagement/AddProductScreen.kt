@@ -95,6 +95,12 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                 val brands = remember { mutableStateListOf<BrandNameModel>()}
 
                 val totalProductQuantity = individualQuantities
+                val cityCoordinates = mapOf(
+                    "Dublin" to Pair(53.3498, -6.2603),
+                    "Cork" to Pair(51.8985, -8.4756),
+                    "Waterford" to Pair(52.2593, -7.1101)
+                )
+                var selectedCity by remember { mutableStateOf("Dublin") }
                 val scrollState = rememberScrollState()
                 Column(
                     modifier = Modifier
@@ -131,14 +137,16 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                         label = { Text(text = stringResource(R.string.vendor_name))},
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(
-                        value = location,
-                        onValueChange = {location = it},
-                        label = { Text(text = stringResource(R.string.location))},
-                        modifier = Modifier.fillMaxWidth()
-                    )
+//                    OutlinedTextField(
+//                        value = location,
+//                        onValueChange = {location = it},
+//                        label = { Text(text = stringResource(R.string.location))},
+//                        modifier = Modifier.fillMaxWidth()
+//                    )
+                    DropDownField("Location",selectedCity, cityCoordinates.keys.toList() ){selectedCity = it}
                     Button(
                         onClick = {
+                            val coordinates = cityCoordinates[selectedCity] ?: Pair(0.0, 0.0)
                             val product = Product(
                                 productName = "$brandName - $productName",
                                 productCategory = productCategory,
@@ -147,7 +155,9 @@ fun AddProductScreen(modifier: Modifier = Modifier,navController: NavHostControl
                                 individualQuantities = mapOf(brandName to individualQuantities),
                                 price = price.toDoubleOrNull()?:0.0,
                                 vendorName = vendorName,
-                                location = location
+                                location = selectedCity,
+                                latitude = coordinates.first,
+                                longitude = coordinates.second
                             )
                             viewModel.addProducts(product){
                                 addProductSuccessDialog = true

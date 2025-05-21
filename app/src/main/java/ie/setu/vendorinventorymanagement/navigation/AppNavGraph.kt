@@ -24,6 +24,7 @@ import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.Plac
 import ie.setu.vendorinventorymanagement.ui.screens.purchaseordermanagement.OrdersScreen
 import ie.setu.vendorinventorymanagement.ui.screens.paymentsmanagement.PaymentsPage
 import ie.setu.vendorinventorymanagement.ui.screens.splashscreen.SplashScreen
+import ie.setu.vendorinventorymanagement.ui.screens.maps.ProductMapScreen
 @Composable
 fun AppNavgraph(
     modifier: Modifier,
@@ -42,6 +43,7 @@ fun AppNavgraph(
         composable(route = Home.route){ HomeScreen(modifier=modifier, navController=navController)}
         composable(route = Profile.route) { ProfileScreen(modifier= modifier, navController = navController)  }
         composable(route = AddProduct.route) { AddProductScreen(modifier= modifier, navController = navController) }
+        composable(route = Maps.route) { ProductMapScreen(modifier= modifier, navController = navController) }
         composable(route = EditProduct.route) { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId")?:""
             EditProductScreen(modifier= modifier, navController = navController,productId)
